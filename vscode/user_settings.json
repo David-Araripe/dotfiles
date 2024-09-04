@@ -1,0 +1,132 @@
+{
+    // Settings related to terminal
+    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
+    "terminal.integrated.fontWeightBold": "450",
+    "terminal.integrated.fontWeight": "200", // 250
+    // General VSCode settings
+    "workbench.settings.openDefaultSettings": true,
+    "workbench.settings.editor": "json",
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.activityBar.location": "top",
+    "workbench.editor.empty.hint": "hidden",
+    // Remote access configurations
+    "remote.autoForwardPortsSource": "hybrid",
+    "remote.SSH.remotePlatform": {
+        "silver": "linux",
+        "galba": "linux",
+        "nerva": "linux",
+        "tetralith": "linux",
+        "uppsalacsb": "linux"
+    },
+    "remote.SSH.path": "path\\to\\ssh.exe", // WSL stuff
+    "remote.SSH.configFile": "path\\to\\config",
+    "remote.SSH.connectTimeout": 30,
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.editor.enableCodeActions": true,
+    "github.copilot.enable": {
+        "*": true,
+        "yaml": false,
+        "plaintext": false,
+        "markdown": true,
+        "javascript": true,
+        "python": true,
+    },
+    // ZenMode settings
+    "zenMode.showTabs": "single",
+    "zenMode.hideLineNumbers": false,
+    "zenMode.centerLayout": true,
+    "zenMode.fullScreen": false,
+    "zenMode.restore": false,
+    // Style settings
+    "editor.accessibilitySupport": "off",
+    "editor.folding": true, // never use, let's save space
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.lineHeight": 19, // 19
+    "editor.fontWeight": "400", // 250
+    "editor.letterSpacing": 0.5,
+    "editor.cursorStyle": "block-outline",
+    "editor.cursorBlinking": "smooth",
+    "editor.inlineSuggest.enabled": true,
+    "editor.minimap.enabled": false,
+    "editor.rulers": [
+        88
+    ],
+    // Settings related to extensions
+    "cSpell.enabled": false,
+    "workbench.colorTheme": "Dracula Theme",
+    "workbench.colorCustomizations": {
+        "editorBracketHighlight.foreground1": "#bbf5ff",
+        "notebook.focusedCellBorder": "#7dfff89c",
+        "editorLineNumber.activeForeground": "#ff79c6",
+        "selection.background": "#d13333",
+    },
+    "workbench.iconTheme": "vscode-great-icons",
+    // Settings to autodocstring
+    "autoDocstring.docstringFormat": "google-notypes",
+    // Settings related to the Python extension
+    "python.analysis.autoImportCompletions": true,
+    "python.terminal.activateEnvironment": false,
+    // Settings related to Python formatting
+    // -> defined on workspace settings
+    "python.languageServer": "Pylance",
+    "black-formatter.importStrategy": "useBundled",
+    // "black-formatter.args": [
+    //     "--config",
+    //     "${workspaceFolder}/pyproject.toml"
+    // ],
+    "[python]": {
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "never"
+        },
+        "editor.formatOnType": false,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+    },
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    // Settings related to the jupyter extension
+    "notebook.lineNumbers": "on",
+    "notebook.output.textLineLimit": 10,
+    "notebook.output.scrolling": true,
+    "notebook.stickyScroll.enabled": true,
+    "notebook.formatOnCellExecution": true,
+    "notebook.confirmDeleteRunningCell": true,
+    "jupyter.askForKernelRestart": false,
+    "jupyter.debugJustMyCode": false,
+    // Settings related to git
+    "git.untrackedChanges": "hidden",
+    "git.terminalAuthentication": false,
+    "gitblame.statusBarMessageFormat": "Blame ${author.name} (${time.ago})",
+    "gitblame.inlineMessageEnabled": true,
+    "gitblame.inlineMessageFormat": "${author.name} - ${time.ago}: ${commit.summary}",
+    "gitblame.inlineMessageMargin": 25,
+    "gitblame.delayBlame": 2500,
+    // Settings related to the language server
+    "python.analysis.diagnosticSeverityOverrides": {
+            "reportGeneralTypeIssues" : "none",
+            "reportOptionalMemberAccess" : "none",
+            "reportUnboundVariable": "none",
+            "reportOptionalSubscript": "none"
+        },
+    // Settings related to testing
+    "python.testing.unittestEnabled": true, 
+    "python.testing.pytestEnabled": false,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./tests",
+        "-p",
+        "*test*.py"
+    ],
+    // Settings related to Ruff
+    "ruff.enable": true,
+    "ruff.fixAll": false,
+    "ruff.organizeImports": false,
+    "ruff.importStrategy": "fromEnvironment",
+}

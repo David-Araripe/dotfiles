@@ -1,0 +1,30 @@
+{
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        },
+        "editor.formatOnType": false,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+    },
+    "black-formatter.args": [
+        // "--config",
+        // "${workspaceFolder}/pyproject.toml"
+        "--line-length",
+        "110",
+        "--target-version",
+        "py310"
+    ],
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "ruff.lint.args": [
+        "--config",
+        "${workspaceFolder}/pyproject.toml"
+    ],
+    "ruff.format.args": [
+        "--config",
+        "${workspaceFolder}/pyproject.toml"
+    ]
+}
