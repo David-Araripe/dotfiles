@@ -1,0 +1,107 @@
+export LS_OPTIONS="--color=auto"
+alias q="squeue -u x_davfi"
+export WRKDIR='/proj/uucompbiochem/users/x_davfi'
+alias cancelalljobs="scancel -u $(whoami)"
+alias F="echo Respects Payed"
+alias gobace="cd /proj/uucompbiochem/users/x_davfi/qligfepv2-BenchmarkExperiments/perturbations/bace"
+alias goq="cd ~/Q/"
+
+function load_modules {
+    echo "Purging any loaded modules"
+    module purge
+    echo "Loading buildenv-gcc/2022a-eb"
+    module load buildenv-gcc/2022a-eb
+}
+
+function myjobs() {
+        ps -fu "$(whoami)" | grep "$1"
+}
+
+function eyeball_q() { # wrote this function to eyeball if my jobs are crashing
+        watch -n 60 "squeue -u $(whoami)"
+}
+
+function fast_rmdir() {
+    local dir_to_remove="$1"
+    local tmp_dir="../.tmp_to_remove_$(date +%s%N)"  # Unique temp directory name
+
+    if [ -z "$dir_to_remove" ]; then
+        echo "Usage: fast_rmdir <directory>"
+        return 1
+    fi
+
+    if [ ! -d "$dir_to_remove" ]; then
+        echo "Error: '$dir_to_remove' is not a directory."
+        return 1
+    fi
+
+    mkdir -p "$tmp_dir" && mv "$dir_to_remove"/* "$tmp_dir"
+    rm -rf "$tmp_dir" &
+    rm -r "$1"
+}
+
+function allwaitingjobs {
+    squeue | grep "PD       0:00" | wc -l
+}
+
+function allrunningjobs {
+    squeue | awk '{print $5}' | grep -w "R" | wc -l
+}
+
+function waitingjobs() {
+    q | grep "$(whoami) PD" | wc -l
+}
+
+function runningjobs() {
+    q | grep "$(whoami)  R" | wc -l
+}
+
+function submitFEPjobs {
+    # Path to the parent directory containing subdirectories
+    PARENT_DIR=$(pwd)
+    # Iterate over all subdirectories
+    for dir in "$PARENT_DIR"/*; do
+      if [ -d "$dir" ]; then  # Check if it is a directory
+        echo "Entering $dir"
+        cd "$dir"  # Enter the directory
+
+        # Check if exe_script.sh exists and is executable
+        if [ -x "FEP_submit.sh" ]; then
+          sh FEP_submit.sh  # Execute the script
+          sleep 2  # Wait for 2 seconds
+        else
+          echo "FEP_submit.sh not found or not executable in $dir"
+        fi
+
+        cd ..  # Go back to the parent directory
+      fi
+    done
+}
+
+### Bash History Configuration ###
+# Avoid duplicate and space-starting history entries.
+HISTCONTROL=ignoreboth
+
+# Commands to ignore in history.
+HISTIGNORE='ls:ll:bg:fg:history:pwd:clear'
+
+# Append to history, increasing file size instead of overwriting.
+shopt -s histappend
+
+# Set history length limits.
+HISTSIZE=3000  # Max commands to remember.
+HISTFILESIZE=5000  # Max lines in the history file.
+
+# Automatically adjust window size.
+shopt -s checkwinsize
+
+# Synchronize command history across sessions.
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+# Adjust LINES and COLUMNS for the window size after each command.
+shopt -s checkwinsize
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
