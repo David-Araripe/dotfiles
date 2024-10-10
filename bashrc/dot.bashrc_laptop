@@ -1,12 +1,8 @@
 #### MY PERSONAL ALIASES #####
 alias gitgraph='git log --oneline --decorate --graph --all'
+alias rscp='rsync -avzhe ssh --progress'
 
 # Defining my custom functions:
-function clonemyrepo() {
-        local myrepo="$1"
-        "git clone git@github.com:David-Araripe/${myrepo}.git"
-}
-
 function killvscode {
         pgrep -u $(id -u) -f ".vscode-server" | xargs kill
 }

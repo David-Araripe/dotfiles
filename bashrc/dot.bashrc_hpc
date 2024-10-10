@@ -1,17 +1,6 @@
 export LS_OPTIONS="--color=auto"
-alias q="squeue -u x_davfi"
-export WRKDIR='/proj/uucompbiochem/users/x_davfi'
+alias q="squeue -u $(whoami)"
 alias cancelalljobs="scancel -u $(whoami)"
-alias F="echo Respects Payed"
-alias gobace="cd /proj/uucompbiochem/users/x_davfi/qligfepv2-BenchmarkExperiments/perturbations/bace"
-alias goq="cd ~/Q/"
-
-function load_modules {
-    echo "Purging any loaded modules"
-    module purge
-    echo "Loading buildenv-gcc/2022a-eb"
-    module load buildenv-gcc/2022a-eb
-}
 
 function myjobs() {
         ps -fu "$(whoami)" | grep "$1"
