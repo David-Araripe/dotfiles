@@ -7,6 +7,10 @@ function killvscode {
         pgrep -u $(id -u) -f ".vscode-server" | xargs kill
 }
 
+function fix_permissions() {
+    find $1 -type d -exec chmod 755 {} \; -o -type f -exec chmod 644 {} \;
+}
+
 function todo_python {
         grep -wnr "# TODO"
 }
