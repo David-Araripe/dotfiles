@@ -10,6 +10,10 @@ function eyeball_q() { # wrote this function to eyeball if my jobs are crashing
         watch -n 60 "squeue -u $(whoami)"
 }
 
+function backup_fep() {
+        tar -czf "$(basename "$PWD")_backup.tar.gz" --wildcards */*/FEP1/298/*/qfep.out */*/slurm*.out *.pdb *.sdf
+}
+
 function fast_rmdir() {
     local dir_to_remove="$1"
     local tmp_dir="../.tmp_to_remove_$(date +%s%N)"  # Unique temp directory name
