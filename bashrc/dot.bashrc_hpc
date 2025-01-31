@@ -11,7 +11,20 @@ function eyeball_q() { # wrote this function to eyeball if my jobs are crashing
 }
 
 function backup_fep() {
-        tar -czf "$(basename "$PWD")_backup.tar.gz" --wildcards */*/FEP1/298/*/qfep.out */*/slurm*.out *.pdb *.sdf
+    # Base command with guaranteed files
+    local tar_cmd="tar -czf \"$(basename "$PWD")_backup.tar.gz\" --wildcards */*/FEP1/298/*/qfep.out */*/slurm*.out *.pdb *.json"
+
+    # Check if any .sdf files exist
+    if compgen -G "ligands.sdf" > /dev/null; then
+        tar_cmd+=" ligands.sdf"
+    fi
+
+    if compgen -G "*/*/inputfiles/fep_config.json" > /dev/null; then
+        tar_cmd+=" */*/inputfiles/fep_config.json"
+    fi
+
+    # Execute the command
+    eval "$tar_cmd"
 }
 
 function fast_rmdir() {
