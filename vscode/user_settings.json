@@ -128,5 +128,6 @@
     "ruff.enable": true,
     "ruff.fixAll": false,
     "ruff.organizeImports": false,
-    "ruff.importStrategy": "fromEnvironment",
+    "ruff.importStrategy": "useBundled",
+    "ruff.nativeServer": "on",
 }
