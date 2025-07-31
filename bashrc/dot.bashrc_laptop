@@ -2,6 +2,89 @@
 alias gitgraph='git log --oneline --decorate --graph --all'
 alias rscp='rsync -avzhe ssh --progress'
 
+md_to_docx() {
+  # Check if at least two arguments are provided (input and output files).
+  if [ "$#" -lt 2 ]; then
+    echo "Usage: md_to_docx <input.md> <output.docx> [additional_pandoc_options]"
+    echo "Example: md_to_docx document.md document.docx"
+    echo "Example: md_to_docx document.md document.docx --toc --number-sections"
+    echo ""
+    echo "This function converts markdown files to DOCX format using pandoc with a Lua filter"
+    echo "that converts HTML img tags to native pandoc images for better DOCX compatibility."
+    echo ""
+    echo "Requirements:"
+    echo "  - pandoc must be installed"
+    echo "  - html-img-to-pandoc.lua filter must be in ~/.lua-filters/ directory"
+    return 1 # Return with an error code
+  fi
+
+  # The first argument is the input file.
+  local input_file="$1"
+  # The second argument is the output file.
+  local output_file="$2"
+  # Get any additional pandoc options from the third argument onwards.
+  local additional_options=("${@:3}")
+
+  # Check if input file exists
+  if [ ! -f "$input_file" ]; then
+    echo "Error: Input file '$input_file' does not exist."
+    return 1
+  fi
+
+  # Check if pandoc is installed
+  if ! command -v pandoc &> /dev/null; then
+    echo "Error: pandoc is not installed or not in PATH."
+    echo "Please install pandoc first: https://pandoc.org/installing.html"
+    return 1
+  fi
+
+  # Check if the Lua filter exists
+  local lua_filter="$HOME/.lua-filters/html-img-to-pandoc.lua"
+  if [ ! -f "$lua_filter" ]; then
+    echo "Error: Lua filter '$lua_filter' not found."
+    echo "Creating the filter file..."
+    
+    # Create the .lua-filters directory if it doesn't exist
+    mkdir -p "$HOME/.lua-filters"
+    
+    # Create the Lua filter
+    cat > "$lua_filter" << 'EOF'
+function RawInline(elem)
+  if elem.format == 'html' then
+    local img_pattern = '<img%s+src="([^"]*)"[^>]*width=(%d+)[^>]*>'
+    local src, width = elem.text:match(img_pattern)
+    if src and width then
+      return pandoc.Image("", src, "", {width = width .. "px"})
+    end
+  end
+end
+
+function RawBlock(elem)
+  if elem.format == 'html' then
+    local img_pattern = '<img%s+src="([^"]*)"[^>]*width=(%d+)[^>]*>'
+    local src, width = elem.text:match(img_pattern)
+    if src and width then
+      return pandoc.Para{pandoc.Image("", src, "", {width = width .. "px"})}
+    end
+  end
+end
+EOF
+    echo "Created '$lua_filter'."
+  fi
+
+  # Run pandoc with the Lua filter
+  echo "Converting '$input_file' to '$output_file'..."
+  pandoc "$input_file" -o "$output_file" --lua-filter="$lua_filter" "${additional_options[@]}"
+  
+  # Check if the conversion was successful
+  if [ $? -eq 0 ]; then
+    echo "Successfully converted '$input_file' to '$output_file'"
+  else
+    echo "Error: Conversion failed."
+    return 1
+  fi
+}
+
 # Defining my custom functions:
 compress() {
   # Check if at least two arguments are provided (archive_name and one file).
