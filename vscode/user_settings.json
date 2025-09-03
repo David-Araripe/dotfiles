@@ -40,8 +40,8 @@
     "zenMode.restore": false,
     // Style settings
     "editor.accessibilitySupport": "off",
-    "editor.folding": true, // never use, let's save space
-    "editor.fontFamily": "JetBrains Mono",
+    "editor.folding": true, // don't really care about this
+    "editor.fontFamily": "JetBrains Mono", // "JetBrains Mono"
     "editor.fontLigatures": true,
     "editor.fontSize": 14,
     "editor.lineHeight": 19, // 19
@@ -56,7 +56,7 @@
     ],
     // Settings related to extensions
     "cSpell.enabled": false,
-    "workbench.colorTheme": "Dracula Theme",
+    "workbench.colorTheme": "Night Owl (No Italics)",
     "workbench.colorCustomizations": {
         "editorBracketHighlight.foreground1": "#bbf5ff",
         "notebook.focusedCellBorder": "#7dfff89c",
@@ -130,4 +130,9 @@
     "ruff.organizeImports": false,
     "ruff.importStrategy": "useBundled",
     "ruff.nativeServer": "on",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "workbench.editorAssociations": {
+        "git-rebase-todo": "default"
+    },
+    "github.copilot.nextEditSuggestions.enabled": true,
 }
