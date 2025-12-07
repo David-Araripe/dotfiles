@@ -7,10 +7,11 @@ GREY="\e[1;30m"
 YELLOW="\e[1;33m"
 CYAN="\e[0;36m"
 ENDCOLOR="\e[m"
+export MYNAME="$(whoami)"
 TIME="\t"   #the current time in 24-hour HH:MM:SS format
 CWD="\w"    #current working directory (full path)
 SERVER="\h" # server name
 
 # Prompt configuration
 source ~/.git-prompt.sh
-export PS1="${YELLOW}[\t]${ENDCOLOR} ${GREEN}\u${ENDCOLOR}@${RED}\h:${ENDCOLOR}${BLUE}\w:${ENDCOLOR}${GREEN}λ${ENDCOLOR}${RED}\$(__git_ps1)${ENDCOLOR} 💻\n"
+export PS1="${YELLOW}[\t]${ENDCOLOR} ${GREEN}${MYNAME}${ENDCOLOR}@${RED}\h:${ENDCOLOR}${BLUE}\w:${ENDCOLOR}${GREEN}λ${ENDCOLOR}${RED}\$(__git_ps1)${ENDCOLOR} 💻\n"
