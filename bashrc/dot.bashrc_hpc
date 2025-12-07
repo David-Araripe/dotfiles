@@ -6,8 +6,9 @@ function myjobs() {
         ps -fu "$(whoami)" | grep "$1"
 }
 
-function eyeball_q() { # wrote this function to eyeball if my jobs are crashing
-        watch -n 60 "squeue -u $(whoami)"
+function eyeball_q() {
+        local refresh_rate=${1:-2}
+        watch -n "$refresh_rate" "squeue -u \$(whoami)"
 }
 
 function backup_fep() {
