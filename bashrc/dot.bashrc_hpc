@@ -11,6 +11,10 @@ function eyeball_q() {
         watch -n "$refresh_rate" "squeue -u \$(whoami)"
 }
 
+mobileq() {
+    squeue -o "%.8i %.20j %.8P %.2t %.9M" "$@" -u "$(whoami)"
+}
+
 function backup_fep() {
     # Base command with guaranteed files
     local tar_cmd="tar -czf \"$(basename "$PWD")_backup.tar.gz\" --wildcards */*/FEP1/298/*/qfep.out */*/slurm*.out *.pdb *.json"
@@ -45,6 +49,62 @@ function fast_rmdir() {
     mkdir -p "$tmp_dir" && mv "$dir_to_remove"/* "$tmp_dir"
     rm -rf "$tmp_dir" &
     rm -r "$1"
+}
+
+gpu_queue_position() {
+    local user="${1:-$USER}"
+
+    echo "=== GPU Queue Priority for $user ==="
+    echo ""
+
+    # Get all pending jobs on GPU partitions
+    local gpu_jobs=$(squeue -t PENDING -o "%i %u %P" --noheader | grep -i gpu)
+
+    if [ -z "$gpu_jobs" ]; then
+        echo "No pending GPU jobs in queue"
+        return
+    fi
+
+    # Get all priorities (no -j filtering, it doesn't work with multiple jobs)
+    local all_prios=$(sprio -o "%i %Y" --noheader)
+
+    # Join and sort by priority (descending)
+    local combined=$(join -1 1 -2 1 \
+        <(echo "$gpu_jobs" | sort -k1,1) \
+        <(echo "$all_prios" | sort -k1,1) \
+        | awk '{print $4, $2, $1, $3}' \
+        | sort -rn)
+
+    if [ -z "$combined" ]; then
+        echo "Could not get priority information"
+        return
+    fi
+
+    # Show your jobs with their rank
+    echo "Your jobs:"
+    echo "$combined" | awk -v u="$user" '$2 == u {printf "  Priority: %10s (Rank: #%d/%d) - Partition: %s\n", $1, NR, NF, $4}' NF=$(echo "$combined" | wc -l)
+
+    # Calculate stats
+    local your_jobs=$(echo "$combined" | awk -v u="$user" '$2 == u {print $1}')
+    local other_jobs=$(echo "$combined" | awk -v u="$user" '$2 != u {print $1}')
+
+    echo ""
+    echo "Queue stats:"
+    printf "  Total pending GPU jobs: %d\n" $(echo "$combined" | wc -l)
+
+    if [ -n "$your_jobs" ]; then
+        local your_max=$(echo "$your_jobs" | sort -rn | head -1)
+        local your_min=$(echo "$your_jobs" | sort -rn | tail -1)
+        local your_avg=$(echo "$your_jobs" | awk '{sum+=$1; n++} END {printf "%.0f", sum/n}')
+        printf "  Your priority range: %s - %s (avg: %s)\n" "$your_max" "$your_min" "$your_avg"
+    fi
+
+    if [ -n "$other_jobs" ]; then
+        local other_max=$(echo "$other_jobs" | sort -rn | head -1)
+        local other_min=$(echo "$other_jobs" | sort -rn | tail -1)
+        local other_avg=$(echo "$other_jobs" | awk '{sum+=$1; n++} END {printf "%.0f", sum/n}')
+        printf "  Others' priority range: %s - %s (avg: %s)\n" "$other_max" "$other_min" "$other_avg"
+    fi
 }
 
 function allwaitingjobs {
