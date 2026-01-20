@@ -130,12 +130,30 @@ function killvscode {
         pgrep -u $(id -u) -f ".vscode-server" | xargs kill
 }
 
-function fix_permissions() {
-    find $1 -type d -exec chmod 755 {} \; -o -type f -exec chmod 644 {} \;
-}
+tomarkdown() {
+    # Check for arguments
+    if [ $# -eq 0 ]; then
+        echo "Usage: tomarkdown <pdf_file> [--use-ocr]"
+        return 1
+    fi
 
-function todo_python {
-        grep -wnr "# TODO"
+    # Initialize variables
+    local file=""
+    local args=()
+
+    # Loop through arguments to separate the filename from flags
+    for arg in "$@"; do
+        if [ "$arg" == "--use-ocr" ]; then
+            # Map custom flag to Docling's force-ocr flag
+            args+=("--force-ocr")
+        else
+            # Keep other arguments (like filename or other docling flags)
+            args+=("$arg")
+        fi
+    done
+
+    # Run docling with the processed arguments
+    micromamba run -n docling docling "${args[@]}" --image-export-mode referenced --output ./
 }
 
 # If not running interactively, don't do anything
