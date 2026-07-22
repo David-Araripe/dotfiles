@@ -6,6 +6,10 @@ function myjobs() {
         ps -fu "$(whoami)" | grep "$1"
 }
 
+function render_figure() {
+    termvisage -S kitty --force-style --kc 4 --cli "$1"
+}
+
 function eyeball_q() {
         local refresh_rate=${1:-2}
         watch -n "$refresh_rate" "squeue -u \$(whoami)"
