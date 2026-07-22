@@ -1,28 +1,36 @@
 {
     // Settings related to terminal
+    "peacock.affectActivityBar": false,
+    "window.confirmBeforeClose": "keyboardOnly",
     "terminal.integrated.inheritEnv": false,
     "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
     "terminal.integrated.fontWeightBold": "450",
     "terminal.integrated.fontWeight": "200", // 250
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.defaultProfile.osx": "bash",
+    "terminal.integrated.suggest.quickSuggestions": {
+        "commands": "off",
+        "arguments": "off",
+        "unknown": "off"
+    },
+    "terminal.integrated.suggest.cdPath": "off",
+    "terminal.integrated.suggest.enabled": "off",
+    "terminal.integrated.suggest.suggestOnTriggerCharacters": false,
     // General VSCode settings
     "workbench.settings.openDefaultSettings": true,
     "workbench.settings.editor": "json",
     "workbench.startupEditor": "newUntitledFile",
     "workbench.activityBar.location": "top",
     "workbench.editor.empty.hint": "hidden",
+    "workbench.colorTheme": "Night Owl",
     // Remote access configurations
     "remote.autoForwardPortsSource": "hybrid",
     "remote.SSH.remotePlatform": {
-        "silver": "linux",
-        "galba": "linux",
-        "nerva": "linux",
-        "tetralith": "linux",
-        "uppsalacsb": "linux"
+        "*": "linux"
     },
-    "remote.SSH.path": "path\\to\\ssh.exe", // WSL stuff
-    "remote.SSH.configFile": "path\\to\\config",
+    "remote.SSH.path": "/usr/bin/ssh", // WSL stuff
+    "remote.SSH.configFile": "/path-to-ssh-config",
     "remote.SSH.connectTimeout": 30,
-    "github.copilot.editor.enableAutoCompletions": true,
     "github.copilot.editor.enableCodeActions": true,
     "github.copilot.enable": {
         "*": true,
@@ -41,7 +49,7 @@
     // Style settings
     "editor.accessibilitySupport": "off",
     "editor.folding": true, // don't really care about this
-    "editor.fontFamily": "JetBrains Mono", // "JetBrains Mono"
+    "editor.fontFamily": "JetBrainsMono Nerd Font Mono",
     "editor.fontLigatures": true,
     "editor.fontSize": 14,
     "editor.lineHeight": 19, // 19
@@ -56,7 +64,6 @@
     ],
     // Settings related to extensions
     "cSpell.enabled": false,
-    "workbench.colorTheme": "Night Owl (No Italics)",
     "workbench.colorCustomizations": {
         "editorBracketHighlight.foreground1": "#bbf5ff",
         "notebook.focusedCellBorder": "#7dfff89c",
@@ -67,6 +74,8 @@
     // Settings to autodocstring
     "autoDocstring.docstringFormat": "google-notypes",
     // Settings related to the Python extension
+    "python.condaPath": "/Users/davidararipe/.local/bin/micromamba",
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python.analysis.autoImportCompletions": true,
     "python.terminal.activateEnvironment": false,
     // Settings related to Python formatting
@@ -135,4 +144,8 @@
         "git-rebase-todo": "default"
     },
     "github.copilot.nextEditSuggestions.enabled": true,
+    "python.createEnvironment.trigger": "off",
+    "git.autofetch": true,
+    "claudeCode.preferredLocation": "panel",
+    "git.ignoreRebaseWarning": true,
 }
