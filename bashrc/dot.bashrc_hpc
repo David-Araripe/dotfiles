@@ -1,3 +1,16 @@
+# Fall back to a known TERM if this host lacks terminfo (e.g. xterm-ghostty)
+if [[ $- == *i* && -n "${TERM:-}" && "$TERM" != dumb ]] &&
+    command -v infocmp >/dev/null 2>&1 &&
+    ! infocmp "$TERM" >/dev/null 2>&1; then
+    for _fallback_term in xterm-256color xterm vt100; do
+        if infocmp "$_fallback_term" >/dev/null 2>&1; then
+            export TERM="$_fallback_term"
+            break
+        fi
+    done
+    unset _fallback_term
+fi
+
 export LS_OPTIONS="--color=auto"
 alias q="squeue -u $(whoami)"
 alias cancelalljobs="scancel -u $(whoami)"
